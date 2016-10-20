@@ -147,11 +147,11 @@
             transform: translate(-50%,-50%);
         }
         #question {
-            height: 25vh;
+            height: 22vh;
             background-color: #545454;
             border: solid black 3px;
             margin: 0;
-            font-size: 19px;
+            font-size: 15px;
             color: lightgray;
             font-family: 'Coda Caption', sans-serif;
             text-shadow: 3px 2px 0 black,
@@ -184,12 +184,12 @@
 
         #win {
             padding: 15px;
-            width: 50vw;
-            height: 15vh;
+            width: 70vw;
+            height: 35vh;
             position: absolute;
             left:50%;
             top: 50%;
-            font-size: 4em;
+            font-size: 3em;
             background-color: red;
             transform: translate(-50%,-50%);
             display:none;
@@ -210,11 +210,8 @@
             <ul>
                 <li><h3>Stats</h3></li>
                 <li>Games Played</li>
-                <p class="value"></p>
                 <li>Players Score</li>
-                <p class="value"></p>
                 <li>Category Proficiency</li>
-                <p class="value"></p>
                 <br>
                 <li><button id="reset_button">Reset</button></li>
             </ul>
@@ -222,8 +219,8 @@
         <!--main tictactoe game area for player 1 and 2-->
         <div id="player_area" class="col-xs-8">
             <div id="players">
-                <div class="player_indicator" id="player1"><span>X</span></div>
-                <div class="player_indicator" id="player2"><span>O</span></div>
+                <div class="player_indicator" id="player1"><span>Player X</span></div>
+                <div class="player_indicator" id="player2"><span>Player O</span></div>
             </div>
             <div id="selectarea">
                 <div>
