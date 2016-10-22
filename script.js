@@ -15,10 +15,10 @@ var cell_template = function(parent){
         ).click(this.cell_click);
         return this.element;
     };
-/*
-This method has been heavily modified to start our question and timer for our
-citation game.
- */
+    /*
+     This method has been heavily modified to start our question and timer for our
+     citation game.
+     */
     this.cell_click = function(){
         if(self.element.hasClass('selected')){
             return;
@@ -28,11 +28,11 @@ citation game.
         clearInterval(main_game.timeCounter); // stops the timer from counting down
         var randomIndex = Math.floor(Math.random() * questionArray.length);
         /*
-        random generate a number between our question array length.
-        Afterwards, takes the same random index and look at the choices array
-        to take a string that will be split up via <br>
-        This array will then be looped through to insert individual dom answers divs
-        into our question section
+         random generate a number between our question array length.
+         Afterwards, takes the same random index and look at the choices array
+         to take a string that will be split up via <br>
+         This array will then be looped through to insert individual dom answers divs
+         into our question section
          */
         var cParse = choicesArray[randomIndex].split("<br>");
         //var qParse = questionArray[randomIndex];
@@ -43,7 +43,7 @@ citation game.
         calltimer(self); // call our timer to pressure the opponent!
         count = 30; // this resets the counter
         /*
-        Clear all of our question and answer div to prep our board area
+         Clear all of our question and answer div to prep our board area
          */
         $("#question").html('');
         $("#answer").html('');
@@ -54,11 +54,11 @@ citation game.
         }
         $("#answer").off("click");
         /*
-            To reduce double click, this turns off any click events on our answers div.
-            This event handler grabs our users choice, takes the element and reads the
-            text.  After woulds it compares if their choices matches the answer array
-            by key index.  If matches assigns a green_advice class below.  If not matches
-            then it assigns a red_advice class.
+         To reduce double click, this turns off any click events on our answers div.
+         This event handler grabs our users choice, takes the element and reads the
+         text.  After woulds it compares if their choices matches the answer array
+         by key index.  If matches assigns a green_advice class below.  If not matches
+         then it assigns a red_advice class.
          */
         $("#answer").on("click",".choices",function() {
             //console.log("random is " + randomIndex);
@@ -90,8 +90,8 @@ citation game.
             $('#timer').html("<h1></h1>");
             if(this.outcome) {
                 /*
-                If outcome is true then assign the player symbol to the cell that was
-                clicked on.
+                 If outcome is true then assign the player symbol to the cell that was
+                 clicked on.
                  */
                 //debugger;
                 var current_player = self.parent.get_current_player();
@@ -102,10 +102,10 @@ citation game.
                 self.parent.cell_clicked(self,1); // run win condition check
             } else {
                 /*
-                If outcome is false, calls function that does not assign a symbol,
-                does not checks for win conditions and switches players.
+                 If outcome is false, calls function that does not assign a symbol,
+                 does not checks for win conditions and switches players.
                  */
-                    self.incorrectAnswerAndSwitch();
+                self.incorrectAnswerAndSwitch();
             }
             $("#answer").off("click");
         });
@@ -115,22 +115,22 @@ citation game.
 
     this.incorrectAnswerAndSwitch = function() {
         /*
-        This function runs just like a successful answer except does not add selected
-        class and symbol.
+         This function runs just like a successful answer except does not add selected
+         class and symbol.
          */
         var current_player = self.parent.get_current_player();
         self.symbol = current_player.get_symbol();
         console.log('current player\'s symbol: '+self.symbol);
         //self.element.addClass('selected');
         /*
-        It also runs this cell clicked function with a 2nd parameter of false, make it
-        so win condition does not gets check and added to our count
+         It also runs this cell clicked function with a 2nd parameter of false, make it
+         so win condition does not gets check and added to our count
          */
         self.parent.cell_clicked(self,0);
     };
 
     this.change_symbol = function(symbol){
-            self.element.text(symbol);
+        self.element.text(symbol);
     };
     this.get_symbol = function(){
         return self.symbol;
@@ -138,8 +138,8 @@ citation game.
 };
 
 /*
-This function now accepts 3 parameters, the 2nd is for board size and the 3rd is the
-win condition
+ This function now accepts 3 parameters, the 2nd is for board size and the 3rd is the
+ win condition
  */
 var game_template = function(main_element,board_size,win_size){
     if (win_size === undefined)
@@ -167,8 +167,8 @@ var game_template = function(main_element,board_size,win_size){
     ];
 
     /*
-    Hard coded win condition is overwritten with a function that dynamically generates
-    the win conditions based on the user selected board size.
+     Hard coded win condition is overwritten with a function that dynamically generates
+     the win conditions based on the user selected board size.
      */
     this.win_conditions = calculateWinConditionArray(board_size);
 
@@ -203,8 +203,8 @@ var game_template = function(main_element,board_size,win_size){
     };
     this.cell_clicked = function(clicked_cell,nocheck){
         /*
-        when 2nd param passed, do not check win condition so that the match
-        counter does not move up!
+         when 2nd param passed, do not check win condition so that the match
+         counter does not move up!
          */
         if(nocheck)
         {
@@ -230,13 +230,16 @@ var game_template = function(main_element,board_size,win_size){
                     count++;
                     if(count==win_size){
                         /*
-                        Even though win size is customizable, it does not check if the matches
-                        were consecutive, we can have a win where X X O X is a win :(
+                         Even though win size is customizable, it does not check if the matches
+                         were consecutive, we can have a win where X X O X is a win :(
                          */
                         clearInterval(main_game.timeCounter); // stop the timer in event of win
                         console.log('someone won'); this.player_wins(this.players[this.current_player]);
                     }//end of count == 3
-                } //end of symbols match
+
+                } else { //if symbols don't match consecutively reset count to zero
+                    count = 0;
+                }//end of symbols match
             } //end of inner loop
         } //end of outer loop
         //TODO check conditions
@@ -246,7 +249,7 @@ var game_template = function(main_element,board_size,win_size){
         //alert(player.get_symbol()+' won the game');
 
         /*
-        Show out custom win message popup! No more alerts!
+         Show out custom win message popup! No more alerts!
          */
         $("#win").html(player.get_symbol()+ ' won the game!');
         $("#win").show();
@@ -281,11 +284,11 @@ $(document).ready(function(){
     main_game.create_players();
 });
 /*
-This function are out custom click handlers.  This one is for the submit button.
-On submit, it collects the values of our select pulldown menus and stores them in
-variables that would pass into our instantiated object via parameters.
-It also does some calculation so that the CSS width and height would be adjusted
-accordingly.
+ This function are out custom click handlers.  This one is for the submit button.
+ On submit, it collects the values of our select pulldown menus and stores them in
+ variables that would pass into our instantiated object via parameters.
+ It also does some calculation so that the CSS width and height would be adjusted
+ accordingly.
  */
 function apply_click_handlers() {
     $("#submit").click(function(){
@@ -306,17 +309,20 @@ function apply_click_handlers() {
     });
 
     /*
-    Our reset button removes active_player if it's on player2
-    It clears the gamebody, question_area and timer to default.
-    It invokes our main_game object methods and recreates our players and cells again
+     Our reset button removes active_player if it's on player2
+     It clears the gamebody, question_area and timer to default.
+     It invokes our main_game object methods and recreates our players and cells again
      */
     $('#reset_button').click(function() {
         console.log ('reset button pushed');
+        //$("#games_played").text(main_game.games_played);
+        //$("#accuracy").text(this.matches / self.times_click)
         $("#player2").removeClass('active_player');
         $("#gamebody").html("");
         $('#question_area').html('<div class="col-xs-12"><div id="question" class="col-xs-12"><h1>Question</h1></div><div id="answer"></div></div>');
         clearInterval(main_game.timeCounter);
         $('#timer').html("<h1>Timer</h1>");
+        main_game = new game_template($('#gamebody'),3,3);
         main_game.create_cells(9);
         main_game.create_players();
         $("#win").hide();
@@ -325,9 +331,9 @@ function apply_click_handlers() {
 
 var count=30;
 /*
-this timer gets called outside of our object but it's reference is passed into this
-function as a parameter so that we can call methods to current player and append
-the timer message for that specific person.
+ this timer gets called outside of our object but it's reference is passed into this
+ function as a parameter so that we can call methods to current player and append
+ the timer message for that specific person.
  */
 function calltimer(that) {
     main_game.timeCounter=setInterval(function(){
@@ -339,7 +345,7 @@ function calltimer(that) {
         }
         if (count === 0) {
             /*
-            If our count hits 0 then show the time up popup message
+             If our count hits 0 then show the time up popup message
              */
             //main_game.invokeTimerSwitch = true;
             var player_symbol = that.parent.get_current_player().get_symbol();
@@ -351,7 +357,7 @@ function calltimer(that) {
             });
         }
         /*
-        As long as the timer is not 0, update our timer div with the current count
+         As long as the timer is not 0, update our timer div with the current count
          */
         $("#timer h1").text(count);
         console.log(count);
@@ -359,11 +365,9 @@ function calltimer(that) {
     }, 1000); //1000 will  run it every 1 second
 }
 /*
-
-There are 3 arrays.  One for question, choices and answers.  Their subindex means they
-are all grouped today. Choices aways will be delimited by <br> to separate into separate
-divs later on in the logic and dynamically inserted into the dom.
-
+ There are 3 arrays.  One for question, choices and answers.  Their subindex means they
+ are all grouped today. Choices aways will be delimited by <br> to separate into separate
+ divs later on in the logic and dynamically inserted into the dom.
  */
 var questionArray=['Veronica Smith<br> Mr. Thornton<br> U.S. History – Per. 2 <br>10 Sept. 2016,  Is this proper MLA heading?',
     ' Are in-text citations the same thing as parenthetical citations?',
@@ -518,4 +522,3 @@ function calculateWinConditionArray(row) {
     //console.log("total", wintotal);
     return wintotal;
 }
-
