@@ -1,67 +1,222 @@
-#clock_container {
-    position: relative;
+
+
+#header {
+    text-align: center;
+    height: 10%;
+    font-family: 'Coda Caption', sans-serif;
+    color: black;
+    text-shadow: 3px 2px 0 white,
+    4px 3px 0 black;
 }
 
-.timer_no_start {
-    background-color: white; /* Foreground color, Background colour */
-    border-radius: 100%;
-    height: 140px; /* Height and width */
-    position: relative;
-    width: 140px; /* Height and width */
-    /*-webkit-animation: time 20s steps(20, start) infinite;*/
-    border: 2px solid deepskyblue;
+body {
+    height: 100vh;
+    #width: 100vw;
+    background-image: url("assets/background_images/8.maxresdefault.jpg");
+    background-position: center;
+    font-family: 'Coda Caption', sans-serif;
+    color:black;
+    background-repeat: no-repeat;
+    background-size: cover;
+    text-shadow: 3px 2px 0 white,
+    4px 3px 0 black;
+    font-size: 1.25vw;
 }
 
-#time_area {
-    position: relative;
+#stats_player_area {
+    /*background-color: gray;*/
+    height: 28vh;
+    font-family: 'Coda Caption', sans-serif;
 }
 
-.timer_overlay {
+#stats ul {
+    list-style-type: none;
+    height: 100%;
+    text-align: center;
+    padding: 0;
+    font-weight: bold;
+}
+#stats {
+    height: 100%;
+    border: solid black 1px;
+    text-shadow: 1px 2px 0 white,
+    1px 2px 0 black;
+    background-color: rgba(255,255,255,.5);
+}
+h3 {
+    margin: 0;
+}
+#timer {
+    /*border-radius: 90px;*/
+    height: 19vh;
+    width: 19vh;
+    text-align: center;
+    background-image:url("assets/background_images/timer-icon-19.png");
+    background-size:contain;
+    background-repeat: no-repeat;
+    font-family: 'Coda Caption', sans-serif;
+    color: black;
+    text-shadow: 3px 2px 0 white,
+    4px 3px 0 black;
+    font-size: 2vw;
+    position: relative;
+    /*background-color: red;*/
+}
+#timer span {
     position: absolute;
     left: 50%;
-    top: 25%;
-    transform: translate(-50%,-50%);
-    z-index: 1;
-    width: 100%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#player_area {
     text-align: center;
-}.timer {
-     background: -webkit-linear-gradient(left, skyBlue 50%, #eee 50%); /* Foreground color, Background colour */
-     border-radius: 100%;
-     height: 100px; /* Height and width */
-     position: relative;
-     width: 100px; /* Height and width */
-     -webkit-animation: time 20s steps(20, start) infinite;
- }
-.mask {
-    border-radius: 100% 0 0 100% / 50% 0 0 50%;
+    width: 65%;
     height: 100%;
-    left: 0;
+    text-shadow: 1px 2px 0 white,
+    1px 2px 0 black;
+}
+#game_area {
+    /*background-color: lightblue;*/
+    /*border: solid black 1px;*/
+    height: 65vh;
+
+}
+#question_area {
+    /*background-color: lightgreen;*/
+    height: 60%;
+    padding: 0;
+    text-align: center;
+    text-shadow: 0px 0px 0 black,
+    0px 0px 0 black;
+    /*background-image: url("assets/background_images/12.questionsThing.jpg");*/
+    /*background-position: center;*/
+    /*background-size: 65vh;*/
+    /*text-align: center;*/
+
+}
+
+#gamebody {
+    height: 90%;
+    width: 45%;
+    background-image: url("assets/background_images/11.anotherBoard.jpg");
+    background-position: center;
+    background-size: 60vh 60vh;
+    text-align: center;
+    border: 15px;
+    padding: 0;
+
+    /*background-repeat: no-repeat;*/
+    /*background-color: lavender;*/
+
+}
+
+.ttt_cell{
+    width: 33%;
+    box-sizing: border-box;
+    border: 2px solid black;
+    height: 33%;
+    display: inline-block;
+    font-size: 2em;
+    font-family: 'Coda Caption', sans-serif;
+    color: black;
+    text-shadow: 3px 2px 0 white,
+    4px 3px 0 black;
+    cursor: pointer;
+}
+
+#players{
+    height: 50%;
+    margin: 0 auto;
+    font-size: 0;
+}
+#players .player_indicator{
+    font-size: initial;
+    display: inline-block;
+    height: 50%;
+    position: relative;
+    border: 3px solid limegreen;
+}
+#players .player_indicator span{
     position: absolute;
-    top: 0;
-    width: 50%;
-    -webkit-animation: mask 20s steps(10, start) infinite;
-    -webkit-transform-origin: 100% 50%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+
 }
-@-webkit-keyframes time {
-    100% {
-        -webkit-transform: rotate(360deg);
-    }
+
+.active_player{
+    background-color: greenyellow;
 }
-@-webkit-keyframes mask {
-    0% {
-        background: #eee; /* Background colour */
-        -webkit-transform: rotate(0deg);
-    }
-    50% {
-        background: #eee; /* Background colour */
-        -webkit-transform: rotate(-180deg);
-    }
-    50.01% {
-        background: skyBlue; /* Foreground colour */
-        -webkit-transform: rotate(0deg);
-    }
-    100% {
-        background: skyBlue; /* Foreground colour */
-        -webkit-transform: rotate(-180deg);
-    }
-}​
+#selectarea .board_number_size {
+    text-align: center;
+
+}
+#question {
+    height: 65%;
+    background-color: #545454;
+    border: solid black 3px;
+    margin: 0;
+    font-size: 15px;
+    color: lightgray;
+    font-family: Arial, sans-serif;
+    text-shadow: 3px 2px 0 black,
+    4px 3px 0 #545454;
+}
+
+.choices {
+    margin: 5px;
+    border: 1px solid black;
+    background-color: grey;
+    padding: 5px;
+}
+.choices:hover {
+    background-color: lightblue;
+    cursor: pointer;
+}
+
+.red_advice {
+    margin: 5px;
+    border: 1px solid black;
+    background-color: red;
+    padding: 5px;
+}
+.green_advice {
+    margin: 5px;
+    border: 1px solid black;
+    background-color: green;
+    padding: 5px;
+}
+
+#win {
+    padding: 15px;
+    position: absolute;
+    left:50%;
+    top: 50%;
+    font-size: 3em;
+    background-color: red;
+    transform: translate(-50%,-50%);
+    text-align: center;
+    display:none;
+}
+
+#settings_window {
+    font-family: Arial,sans-serif;
+    font-size: 16px;
+    text-shadow: none;
+    position: absolute;
+    left: 0;
+    top: 30%;
+    background-color: lightcyan;
+    height: 25vh;
+    border: 2px solid black;
+    border-radius: 5px;
+    padding: 15px;
+    display:none;
+}
+#settings_container {
+}
+
+#settings_float {
+
+}

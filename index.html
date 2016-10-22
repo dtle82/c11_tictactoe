@@ -5,216 +5,7 @@
     <title id="title">Tic Tac Toe</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css?family=Coda+Caption:800" rel="stylesheet">
-    <style>
-
-
-        #header {
-            text-align: center;
-            height: 10%;
-            font-family: 'Coda Caption', sans-serif;
-            color: black;
-            text-shadow: 3px 2px 0 white,
-            4px 3px 0 black;
-        }
-
-        body {
-            height: 100vh;
-            #width: 100vw;
-            background-image: url("assets/background_images/8.maxresdefault.jpg");
-            background-position: center;
-            font-family: 'Coda Caption', sans-serif;
-            color:black;
-            background-repeat: no-repeat;
-            background-size: cover;
-            text-shadow: 3px 2px 0 white,
-            4px 3px 0 black;
-            font-size: 1.25vw;
-        }
-
-        #stats_player_area {
-            /*background-color: gray;*/
-            height: 28vh;
-            font-family: 'Coda Caption', sans-serif;
-        }
-
-        #stats ul {
-            list-style-type: none;
-            height: 100%;
-            text-align: center;
-            padding: 0;
-            font-weight: bold;
-        }
-        #stats {
-            height: 100%;
-            border: solid black 1px;
-            text-shadow: 1px 2px 0 white,
-            1px 2px 0 black;
-            background-color: rgba(255,255,255,.5);
-        }
-        h3 {
-            margin: 0;
-        }
-        #timer {
-            /*border-radius: 90px;*/
-            height: 19vh;
-            width: 19vh;
-            text-align: center;
-            background-image:url("assets/background_images/timer-icon-19.png");
-            background-size:contain;
-            background-repeat: no-repeat;
-            font-family: 'Coda Caption', sans-serif;
-            color: black;
-            text-shadow: 3px 2px 0 white,
-            4px 3px 0 black;
-            font-size: 2vw;
-            position: relative;
-            /*background-color: red;*/
-        }
-        #timer span {
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-        }
-
-        #player_area {
-            text-align: center;
-            width: 65%;
-            height: 100%;
-            text-shadow: 1px 2px 0 white,
-            1px 2px 0 black;
-        }
-        #game_area {
-            /*background-color: lightblue;*/
-            /*border: solid black 1px;*/
-            height: 65vh;
-
-        }
-        #question_area {
-            /*background-color: lightgreen;*/
-            height: 60%;
-            padding: 0;
-            text-align: center;
-            text-shadow: 0px 0px 0 black,
-            0px 0px 0 black;
-            /*background-image: url("assets/background_images/12.questionsThing.jpg");*/
-            /*background-position: center;*/
-            /*background-size: 65vh;*/
-            /*text-align: center;*/
-
-        }
-
-        #gamebody {
-            height: 90%;
-            width: 45%;
-            background-image: url("assets/background_images/11.anotherBoard.jpg");
-            background-position: center;
-            background-size: 60vh 60vh;
-            text-align: center;
-            border: 15px;
-            padding: 0;
-
-            /*background-repeat: no-repeat;*/
-            /*background-color: lavender;*/
-
-        }
-
-        .ttt_cell{
-            width: 33%;
-            box-sizing: border-box;
-            border: 2px solid black;
-            height: 33%;
-            display: inline-block;
-            font-size: 2em;
-            font-family: 'Coda Caption', sans-serif;
-            color: black;
-            text-shadow: 3px 2px 0 white,
-            4px 3px 0 black;
-        }
-
-        #players{
-            /*background-color: lavender;*/
-            height: 40%;
-            width: 75%;
-            margin: 0 auto;
-            font-size: 0;
-        }
-        #players .player_indicator{
-            font-size: initial;
-            display: inline-block;
-            width: 32%;
-            height: 50%;
-            position: relative;
-            border: 3px solid limegreen;
-        }
-        #players .player_indicator span{
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-
-        }
-
-        .active_player{
-            background-color: greenyellow;
-        }
-        #selectarea .board_number_size {
-            width: 50vh;
-            text-align: center;
-            /*position: absolute;*/
-            /*top: 70%;*/
-            /*left: 50%;*/
-            /*transform: translate(-50%,-50%);*/
-        }
-        #question {
-            height: 65%;
-            background-color: #545454;
-            border: solid black 3px;
-            margin: 0;
-            font-size: 15px;
-            color: lightgray;
-            font-family: Arial, sans-serif;
-            text-shadow: 3px 2px 0 black,
-            4px 3px 0 #545454;
-        }
-
-        .choices {
-            margin: 5px;
-            border: 1px solid black;
-            background-color: grey;
-            padding: 5px;
-        }
-        .choices:hover {
-            background-color: lightblue;
-            cursor: pointer;
-        }
-
-        .red_advice {
-            margin: 5px;
-            border: 1px solid black;
-            background-color: red;
-            padding: 5px;
-        }
-        .green_advice {
-            margin: 5px;
-            border: 1px solid black;
-            background-color: green;
-            padding: 5px;
-        }
-
-        #win {
-            padding: 15px;
-            width: 70vw;
-            height: 35vh;
-            position: absolute;
-            left:50%;
-            top: 50%;
-            font-size: 3em;
-            background-color: red;
-            transform: translate(-50%,-50%);
-            display:none;
-        }
-    </style>
+    <link href="style.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-2.1.4.js"></script>
     <script src="script.js"></script>
 
@@ -234,50 +25,16 @@
                 <li>Players Score</li>
                 <li>Category Proficiency</li>
                 <br>
-                <li><button id="reset_button">Reset</button></li>
+                <li><button id="reset_button" class="btn btn-warning">Reset</button></li>
             </ul>
         </div>
         <!--main tictactoe game area for player 1 and 2-->
         <div id="player_area" class="col-lg-8 col-xs-8">
-            <div id="players">
-                <div class="player_indicator" id="player1"><span>Player X</span></div>
-                <div class="player_indicator" id="player2"><span>Player O</span></div>
+            <div id="players" class="col-xs-12">
+                <div class="player_indicator col-xs-6" id="player1"><span>Player X</span></div>
+                <div class="player_indicator col-xs-6" id="player2"><span>Player O</span></div>
             </div>
-            <div id="selectarea">
-                <div class="board_number_size">
-                    Select Board Size: <select name="board_size" id="board_size">
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
-                    <option>6</option>
-                    <option>7</option>
-                    <option>8</option>
-                    <option>9</option>
-                    <option>10</option>
-                    <option>11</option>
-                    <option>12</option>
-                </select>
-                </div>
-
-                <div class="board_number_size">
-                    Select Win Size: <select name="win_size" id="win_size">
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
-                    <option>6</option>
-                    <option>7</option>
-                    <option>8</option>
-                    <option>9</option>
-                    <option>10</option>
-                    <option>11</option>
-                    <option>12</option>
-                </select>
-                </div>
-                <!--submit button for game and win size-->
-                <div>
-                    <button id="submit">Submit</button>
-                </div>
-            </div>
+            <button id="settings" class="btn btn-info">Settings</button>
         </div>
         <div id="timer" class="col-xs-2">
             <span>Timer</span>
@@ -302,6 +59,48 @@
     </div>
 </div>
 
-<div id="win">You Win!</div>
+<div id="win" class="col-xs-12">You Win!</div>
+<div id="settings_window" class="col-xs-12">
+    <div id="settings_container" class="col-xs-12">
+        <div id="settings_float" class="col-xs-12">
+            <div class="board_number_size col-xs-6 form-group">
+                <label for="board_size">Change Board Size:</label>
+                <select name="board_size" id="board_size" class="form-control">
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                    <option>6</option>
+                    <option>7</option>
+                    <option>8</option>
+                    <option>9</option>
+                    <option>10</option>
+                    <option>11</option>
+                    <option>12</option>
+                </select>
+            </div>
+
+            <div class="board_number_size col-xs-6 form-group">
+                <label for="win_size">Change Minimum Win Size:</label>
+                <select name="win_size" id="win_size" class="form-control">
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                    <option>6</option>
+                    <option>7</option>
+                    <option>8</option>
+                    <option>9</option>
+                    <option>10</option>
+                    <option>11</option>
+                    <option>12</option>
+                </select>
+            </div>
+            <div class="container col-xs-12 form-group">
+                <button id="submit" class="btn btn-success">Submit</button>
+                <button id="settings_close" class="btn btn-error">Close</button>
+            </div>
+        </div>
+    </div>
+
+</div>
 </body>
 </html>

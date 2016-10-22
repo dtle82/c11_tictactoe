@@ -246,14 +246,18 @@ var game_template = function(main_element,board_size,win_size){
         //TODO check conditions
     };
     this.player_wins = function(player){
-        console.log(player.get_symbol()+' won the game');
+        //console.log(player.get_symbol()+' won the game');
         //alert(player.get_symbol()+' won the game');
 
         /*
          Show out custom win message popup! No more alerts!
          */
-        $("#win").html(player.get_symbol()+ ' won the game!');
+        $("#win").html('Player ' + player.get_symbol()+ ' won the game!');
         $("#win").show();
+        $("#reset_button").addClass('blink_me');
+        run_blink();
+        $(".ttt_cell").addClass("selected");
+        this.no_click = true;
     };
 };
 
@@ -293,6 +297,9 @@ $(document).ready(function(){
  */
 function apply_click_handlers() {
     $("#submit").click(function(){
+        clearInterval(main_game.timeCounter);
+        clear_all();
+
         var board_size = $("#board_size option:selected").val();
         var win_size = $("#win_size option:selected").val();
         console.log("board_size is ",board_size);
@@ -307,6 +314,9 @@ function apply_click_handlers() {
         main_game.create_players();
         $(".ttt_cell").css("width",cell_width);
         $(".ttt_cell").css("height",cell_width);
+        $("#settings_window").hide(function(){
+            $("body.container>div").css("opacity","1");
+        });
     });
 
     /*
@@ -315,20 +325,55 @@ function apply_click_handlers() {
      It invokes our main_game object methods and recreates our players and cells again
      */
     $('#reset_button').click(function() {
-        console.log ('reset button pushed');
-        //$("#games_played").text(main_game.games_played);
-        //$("#accuracy").text(this.matches / self.times_click)
-        $("#player2").removeClass('active_player');
-        $("#gamebody").html("");
-        $('#question_area').html('<div id="question"><h1>Question</h1></div><div id="answer"></div>');
-        clearInterval(main_game.timeCounter);
-        $('#timer').html("<span>Timer</span>");
-        main_game = new game_template($('#gamebody'),3,3);
-        main_game.create_cells(9);
-        main_game.create_players();
-        $("#win").hide();
+        clear_all();
     });
+
+    $("#settings").click(function() {
+        if(!main_game.no_click)
+        {
+            $("body.container>div").not("#settings_window").css("opacity",".5");
+            $("#settings_window").show(function(){
+                $("#settings_windows").css("opacity","1");
+            });
+        }
+    });
+
+    $("#settings_close").click(function() {
+        $("#settings_window").hide(function(){
+            $("body.container>div").css("opacity","1");
+        });
+    });
+
+    $("#board_size").on("change",function() {
+       var board_size = $("#board_size option:selected").val();
+        console.log(board_size);
+        var options = [];
+        for(var i=3;i<=board_size;i++) {
+            options_inside = $("<option>",{
+                text: i
+            });
+            options.push(options_inside);
+        }
+        console.log(options);
+        $("#win_size").text('');
+        $("#win_size").append(options);
+    });
+
 }
+
+function clear_all() {
+    $("#player2").removeClass('active_player');
+    $("#gamebody").html("");
+    $('#question_area').html('<div id="question"><h1>Question</h1></div><div id="answer"></div>');
+    clearInterval(main_game.timeCounter);
+    $('#timer').html("<span>Timer</span>");
+    main_game = new game_template($('#gamebody'),3,3);
+    main_game.create_cells(9);
+    main_game.create_players();
+    $("#win").hide();
+    $("#reset_button").removeClass('blink_me');
+}
+
 
 var count=30;
 /*
@@ -353,7 +398,7 @@ function calltimer(that) {
              */
             //main_game.invokeTimerSwitch = true;
             var player_symbol = that.parent.get_current_player().get_symbol();
-            $("#win").html("Player " + player_symbol + '\'s time is up! Click for next player turn');
+            $("#win").html("Player " + player_symbol + '\'s time is up! Click for next player\'s turn');
             $("#win").show();
             $("#win").click(function(){
                 $(this).hide();
@@ -367,6 +412,8 @@ function calltimer(that) {
          As long as the timer is not 0, update our timer div with the current count
          */
         $("#timer span").text(count);
+        var audio = new Audio('assets/sounds/Tick.mp3');
+        audio.play();
         console.log(count);
 
     }, 1000); //1000 will  run it every 1 second
@@ -528,4 +575,11 @@ function calculateWinConditionArray(row) {
     //console.log("diagonal RL", temp);
     //console.log("total", wintotal);
     return wintotal;
+}
+
+
+function run_blink() {
+    (function blink() {
+        $('.blink_me').fadeOut(500).fadeIn(500, blink);
+    })();
 }
