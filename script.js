@@ -67,25 +67,40 @@ var cell_template = function(parent){
             //debugger;
             if(userChoice === answerArray[randomIndex])
             {
+                console.log($(this));
+                $(this).addClass('green_advice');
                 var advice = $("<div>", {
                     class: "green_advice",
                     text: answerArray[randomIndex]
                 });
-                //console.log("They chose the correct answer");
                 this.outcome = true;
-                $("#answer").append(advice);
+                //$("#answer").append(advice);
+                // var count_this = $(".choices").length;
+                // console.log("count is " + count_this);
+                // for(var i = 0;i<count_this;i++) {
+                //
+                //     $('.choices:eq('+i+')').hide(i*500);
+                //
+                // }
             } else {
+                console.log($(this));
+                $(this).addClass('red_advice');
                 var advice = $("<div>", {
                     class: "red_advice",
                     text: answerArray[randomIndex]
                 });
-                //console.log("They chose wrong");
-                //console.log("Their answer is ",userChoice);
-                //console.log("Correct answer is ",answerArray[randomIndex]);
-                //console.log("Advice is ",advice);
-                $("#answer").append(advice);
+                // var count_this = $(".choices").length;
+                // console.log("count is " + count_this);
+                // for(var i = 0;i<count_this;i++) {
+                //
+                //     $('.choices:eq('+i+')').hide(i*500);
+                //
+                // }
+                //$(".choices").hide(1000);
+                //$("#answer").append(advice);
                 this.outcome = false;
             }
+
             //console.log("Time counter is " + main_game.timeCounter);
             clearInterval(main_game.timeCounter); // stops the timer again
             $('#timer').html("<span></span>");
@@ -227,8 +242,8 @@ var game_template = function(main_element,board_size,win_size){
             //console.log('cell array is',this.cell_array);
             for(var j=0; j<this.win_conditions[i].length; j++){
                 if(this.cell_array[this.win_conditions[i][j]].get_symbol() == current_player_symbol){
-                    console.log(i + " " + j + ' ' + current_player_symbol + ' symbols match');
                     count++;
+                    console.log(current_player_symbol + " " + " " + j + " win count is " + count);
                     if(count==win_size){
                         /*
                          Even though win size is customizable, it does not check if the matches
@@ -398,10 +413,13 @@ function calltimer(that) {
              */
             //main_game.invokeTimerSwitch = true;
             var player_symbol = that.parent.get_current_player().get_symbol();
-            $("#win").html("Player " + player_symbol + '\'s time is up! Click for next player\'s turn');
+            $("#win").html('<span>Player ' + player_symbol + '\'s time is up! Click for next player\'s turn</span>');
+            $("#win span").addClass("blink_me");
+            run_blink();
             $("#win").show();
             $("#win").click(function(){
                 $(this).hide();
+                $("#win span").removeClass("blink_me");
                 that.incorrectAnswerAndSwitch();
             });
 

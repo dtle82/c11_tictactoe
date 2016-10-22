@@ -181,11 +181,19 @@ h3 {
     background-color: red;
     padding: 5px;
 }
+
+.red_advice:hover {
+    background-color: red;
+}
 .green_advice {
     margin: 5px;
     border: 1px solid black;
     background-color: green;
     padding: 5px;
+}
+
+.green_advice:hover {
+    background-color: green;
 }
 
 #win {
