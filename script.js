@@ -10,7 +10,7 @@ var cell_template = function(parent){
         this.element = $("<div>",
             {
                 class:'ttt_cell',
-                html: "&nbsp;"
+                html: ""
             }
         ).click(this.cell_click);
         return this.element;
@@ -146,7 +146,25 @@ var cell_template = function(parent){
     };
 
     this.change_symbol = function(symbol){
-        self.element.text(symbol);
+        //self.element.text(symbol);
+        var inside = $("<div>",{
+            class: 'inside_ttt',
+            html:symbol
+        });
+        console.log("Create! " + self.parent.board_size);
+        self.element.append(inside);
+        if(self.parent.board_size > 0 && self.parent.board_size <= 3) {
+            console.log("YES");
+            console.log("size is " + $(".inside_ttt").css("font-size"));
+            $(".inside_ttt").css("font-size","9vh");
+            //$(".inside_ttt").addClass("lg_font");
+        } else if (self.parent.board_size > 3 && self.parent.board_size <= 8) {
+            $(".inside_ttt").css("font-size","6vh");
+            //$(".inside_ttt").addClass("md_font");
+        } else if (self.parent.board_size > 8 && self.parent.board_size <= 12) {
+            $(".inside_ttt").css("font-size","4vh");
+            //$(".inside_ttt").addClass("sm_font");
+        }
     };
     this.get_symbol = function(){
         return self.symbol;
@@ -164,6 +182,7 @@ var game_template = function(main_element,board_size,win_size){
     }
     //console.log('game template constructor called');
     var self = this;
+    this.board_size = board_size;
     this.element = main_element;
     this.cell_array = [];
     this.players = [];
@@ -196,6 +215,7 @@ var game_template = function(main_element,board_size,win_size){
             this.cell_array.push(cell);
             this.element.append(cell_element);
         }
+
     };
     this.create_players = function(){
         var player1 = new player_template('X', $('#player1'));
@@ -317,8 +337,10 @@ function apply_click_handlers() {
 
         var board_size = $("#board_size option:selected").val();
         var win_size = $("#win_size option:selected").val();
+
         console.log("board_size is ",board_size);
         console.log("win_size is " , win_size);
+
         var cell_width = 100/board_size;
         cell_width = cell_width.toFixed(3);
         cell_width = cell_width + "%";

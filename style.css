@@ -123,6 +123,27 @@ h3 {
     text-shadow: 3px 2px 0 white,
     4px 3px 0 black;
     cursor: pointer;
+    position: relative;
+}
+
+.inside_ttt {
+    position:absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    font-size: 9vh;
+}
+
+.lg_font {
+    font-size: 10vh;
+}
+
+.md_font {
+    font-size: 6vh;
+}
+
+.sm_font {
+    font-size: 5vh;
 }
 
 #players{
