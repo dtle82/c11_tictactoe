@@ -320,7 +320,6 @@ var game_template = function(main_element,board_size,win_size){
                             //console.log(this.applause);
                         }
 
-
                     } //end of count == 3
 
                 } else { //if symbols don't match consecutively reset count to zero
@@ -339,8 +338,16 @@ var game_template = function(main_element,board_size,win_size){
         $("#reset_button").addClass('blink_me');
         run_blink();
         $(".ttt_cell").addClass("selected");
+        if(!this.no_click) {
+            if(player.get_symbol() === "X")
+            {
+                player_x_wins++;
+            } else {
+                player_o_wins++;
+            }
+        }
+
         this.no_click = true;
-        games_played++;
     };
 
     this.callTie = function(){
@@ -469,9 +476,13 @@ function clear_all() {
     main_game.create_players();
     $("#win").hide();
     $("#reset_button").removeClass('blink_me');
-    games_played = 0;
-    player_o_wins = 0;
-    player_x_wins = 0;
+    $("#pxScore").text(player_x_wins);
+    $("#poScore").text(player_o_wins);
+    $("#gpSpan").text(++games_played);
+    console.log(player_o_wins,player_x_wins,games_played);
+    //games_played = 0;
+    //player_o_wins = 0;
+    //player_x_wins = 0;
 
 }
 
@@ -583,7 +594,7 @@ var choicesArray=['Yes<br>No',
     '(a)Yes. That’s why the boxes are there. <br>(b)No. Only fill in the boxes necessary for the source you are citing.',
     '(a)Ten spaces or two tabs <br>(b)Five spaces or one tab.',
     '(a)No. URLs are long and messy and should never be included <br>(b)Yes! URLs are required by the new MLA 8 style.',
-    '(a)Johnson, Betty. “Abstract Art.”<em> Modern Art – San Francisco</em>, 24 Jan. 2015, www.MASF.org/abstract_art.html. Accessed 11 Oct. 2015. <br> (b)Johnson, Betty. “Abstract Art.”<em> Modern Art – San Francisco</em>, 24 Jan. 2015, http://www.MASF.org/abstract_art.html. Accessed 11 Oct. 2015.',
+    '(a)Johnson, Betty. “Abstract Art.”Modern Art – San Francisco, 24 Jan. 2015, www.MASF.org/abstract_art.html. Accessed 11 Oct. 2015. <br> (b)Johnson, Betty. “Abstract Art.”<em> Modern Art – San Francisco</em>, 24 Jan. 2015, http://www.MASF.org/abstract_art.html. Accessed 11 Oct. 2015.',
     '(a)(239 Smith)<br>(b)(Smith, 239)<br>(c)(Smith, p. 239)<br>(d)(Smith 239)',
     '(a)Smith, John. “Modern World History.”<br> (b)Smith, John. “World History Overview.”',
     '(a)The webpage article title (which is in quotes)<br>(b)The publisher of the website;',
@@ -612,7 +623,7 @@ var answerArray=['No',
     '(b)No. Only fill in the boxes necessary for the source you are citing.',
     '(b)Five spaces or one tab.',
     '(b)Yes! URLs are required by the new MLA 8 style.',
-    '(a)Johnson, Betty. “Abstract Art.”Modern Art – San Francisco, 24 Jan. 2015, www.MASF.org/abstract_art.html. Accessed 11 Oct. 2015.',
+    '(a)Johnson, Betty. “Abstract Art.”Modern Art – San Francisco, 24 Jan. 2015, www.MASF.org/abstract_art.html. Accessed 11 Oct. 2015. ',
     '(d)(Smith 239)',
     '(a)Smith, John. “Modern World History.”',
     '(a)The webpage article title (which is in quotes)',
