@@ -521,7 +521,7 @@ function calltimer(that) {
          As long as the timer is not 0, update our timer div with the current count
          */
         $("#timer span").text(count);
-        var tick = new Audio('assets/sounds/tick.mp3');
+        var tick = new Audio('assets/sounds/Tick.mp3');
         tick.play();
         //console.log(count);
 
