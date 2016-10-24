@@ -1,6 +1,11 @@
 /**
  * Created by danh on 10/18/16.
  */
+
+var games_played = 0;
+var player_x_wins = 0;
+var player_o_wins = 0;
+
 var cell_template = function(parent){
     var self = this;
     this.parent = parent;
@@ -25,8 +30,16 @@ var cell_template = function(parent){
         }
         this.outcome = false; // our outcome is set to false as default
         //debugger;
+
+        $("#temp_placeholder").remove();
+
+        var current_player = self.parent.get_current_player();
+        //self.symbol = current_player.get_symbol();
+        self.add_temp_placeholder(current_player.get_symbol());
+
         clearInterval(main_game.timeCounter); // stops the timer from counting down
-        var randomIndex = Math.floor(Math.random() * questionArray.length);
+        var randomIndex = Math.floor(Math.random() * (questionArray.length));
+        //console.log(randomIndex);
         /*
          random generate a number between our question array length.
          Afterwards, takes the same random index and look at the choices array
@@ -62,17 +75,22 @@ var cell_template = function(parent){
          then it assigns a red_advice class.
          */
         $("#answer").on("click",".choices",function() {
+            $("#temp_placeholder").remove();
             //console.log("random is " + randomIndex);
             var userChoice = $(this).text();
+            $(this).addClass('answer_selected');
             //debugger;
             if(userChoice === answerArray[randomIndex])
             {
-                console.log($(this));
+                //console.log($(this));
                 $(this).addClass('green_advice');
-                var advice = $("<div>", {
-                    class: "green_advice",
-                    text: answerArray[randomIndex]
-                });
+                var coins = new Audio('assets/sounds/coins.mp3');
+                coins.volume = 0.2;
+                coins.play();
+                // var advice = $("<div>", {
+                //     class: "green_advice",
+                //     text: answerArray[randomIndex]
+                // });
                 this.outcome = true;
                 //$("#answer").append(advice);
                 // var count_this = $(".choices").length;
@@ -82,22 +100,25 @@ var cell_template = function(parent){
                 //     $('.choices:eq('+i+')').hide(i*500);
                 //
                 // }
-            } else {
-                console.log($(this));
+            } else { // When the user click on the wrong answer
+                //console.log($(this));
                 $(this).addClass('red_advice');
                 var advice = $("<div>", {
-                    class: "red_advice",
+                    class: "green_advice",
                     text: answerArray[randomIndex]
                 });
-                // var count_this = $(".choices").length;
+                var count_this = $(".choices").length;
                 // console.log("count is " + count_this);
                 // for(var i = 0;i<count_this;i++) {
                 //
                 //     $('.choices:eq('+i+')').hide(i*500);
                 //
                 // }
-                //$(".choices").hide(1000);
-                //$("#answer").append(advice);
+                // $(".choices").hide(1000);
+                $("#answer").append(advice);
+                var wrong = new Audio('assets/sounds/wrong.mp3');
+                //wrong.volume = 0.2;
+                wrong.play();
                 this.outcome = false;
             }
 
@@ -112,7 +133,7 @@ var cell_template = function(parent){
                 //debugger;
                 var current_player = self.parent.get_current_player();
                 self.symbol = current_player.get_symbol();
-                console.log('current player\'s symbol: '+self.symbol);
+                //console.log('current player\'s symbol: '+self.symbol);
                 self.element.addClass('selected');
                 self.change_symbol(self.symbol);
                 self.parent.cell_clicked(self,1); // run win condition check
@@ -134,15 +155,20 @@ var cell_template = function(parent){
          This function runs just like a successful answer except does not add selected
          class and symbol.
          */
-        var current_player = self.parent.get_current_player();
-        self.symbol = current_player.get_symbol();
-        console.log('current player\'s symbol: '+self.symbol);
-        //self.element.addClass('selected');
-        /*
-         It also runs this cell clicked function with a 2nd parameter of false, make it
-         so win condition does not gets check and added to our count
-         */
         self.parent.cell_clicked(self,0);
+
+    };
+
+    this.add_temp_placeholder = function(symbol){
+        var inside = $("<div>",{
+            id: 'temp_placeholder',
+            class: 'inside_ttt blink_me transparent',
+            html:symbol
+        });
+        //console.log("inside ",symbol);
+
+        self.element.append(inside);
+        run_blink();
     };
 
     this.change_symbol = function(symbol){
@@ -151,11 +177,11 @@ var cell_template = function(parent){
             class: 'inside_ttt',
             html:symbol
         });
-        console.log("Create! " + self.parent.board_size);
+        //console.log("Create! " + self.parent.board_size);
         self.element.append(inside);
         if(self.parent.board_size > 0 && self.parent.board_size <= 3) {
-            console.log("YES");
-            console.log("size is " + $(".inside_ttt").css("font-size"));
+            //console.log("YES");
+            //console.log("size is " + $(".inside_ttt").css("font-size"));
             $(".inside_ttt").css("font-size","9vh");
             //$(".inside_ttt").addClass("lg_font");
         } else if (self.parent.board_size > 3 && self.parent.board_size <= 8) {
@@ -187,6 +213,8 @@ var game_template = function(main_element,board_size,win_size){
     this.cell_array = [];
     this.players = [];
     this.current_player = 0;
+
+    // TODO add properties to hold counter for player x wins, player o wins, total games played
     //   0    1    2
     //   3    4    5
     //   6    7    8
@@ -250,6 +278,16 @@ var game_template = function(main_element,board_size,win_size){
         self.switch_players();
         self.players[self.current_player].activate_player();
 
+        //console.log("how many cells " + this.cell_array.length);
+        this.total_cell = this.cell_array.length;
+        //console.log("how many selected cells ", $(".selected").length);
+
+        this.total_selected = $(".inside_ttt").length;
+        if (this.total_cell === this.total_selected) {
+            //console.log("TIE!");
+            this.callTie();
+        }
+
     };
     this.check_win_conditions = function(){
         //console.log('check win conditions called');
@@ -260,40 +298,62 @@ var game_template = function(main_element,board_size,win_size){
             var count=0;
             //console.log('checking win conditions ',this.win_conditions);
             //console.log('cell array is',this.cell_array);
+            this.applause = false;
             for(var j=0; j<this.win_conditions[i].length; j++){
                 if(this.cell_array[this.win_conditions[i][j]].get_symbol() == current_player_symbol){
                     count++;
-                    console.log(current_player_symbol + " " + " " + j + " win count is " + count);
+                    //console.log("Player " + current_player_symbol + ", i is: " + i + ",j is: " + j + " win count is " + count + ", on Win : "+ this.win_conditions[i][j]);
                     if(count==win_size){
                         /*
                          Even though win size is customizable, it does not check if the matches
                          were consecutive, we can have a win where X X O X is a win :(
                          */
                         clearInterval(main_game.timeCounter); // stop the timer in event of win
-                        console.log('someone won'); this.player_wins(this.players[this.current_player]);
-                    }//end of count == 3
+                        console.log('someone won');
+                        this.player_wins(this.players[this.current_player]);
+                        // TODO Here is where you increment the object properties for the winner
+                        if(!this.applause)
+                        {
+                            var applause = new Audio('assets/sounds/applause.mp3');
+                            applause.play();
+                            this.applause = true;
+                            //console.log(this.applause);
+                        }
+
+
+                    } //end of count == 3
 
                 } else { //if symbols don't match consecutively reset count to zero
                     count = 0;
                 }//end of symbols match
             } //end of inner loop
         } //end of outer loop
-        //TODO check conditions
     };
     this.player_wins = function(player){
-        //console.log(player.get_symbol()+' won the game');
-        //alert(player.get_symbol()+' won the game');
-
         /*
          Show out custom win message popup! No more alerts!
          */
+        console.log("Player Won!");
         $("#win").html('Player ' + player.get_symbol()+ ' won the game!');
         $("#win").show();
         $("#reset_button").addClass('blink_me');
         run_blink();
         $(".ttt_cell").addClass("selected");
         this.no_click = true;
+        games_played++;
     };
+
+    this.callTie = function(){
+        console.log(this.applause);
+        if(!this.applause) {
+            $("#win").html('It\'s a draw!');
+            $("#win").show();
+            $("#reset_button").addClass('blink_me');
+            run_blink();
+            $(".ttt_cell").addClass("selected");
+            this.no_click = true;
+        }
+    }
 };
 
 var player_template = function(symbol, element){
@@ -409,6 +469,10 @@ function clear_all() {
     main_game.create_players();
     $("#win").hide();
     $("#reset_button").removeClass('blink_me');
+    games_played = 0;
+    player_o_wins = 0;
+    player_x_wins = 0;
+
 }
 
 
@@ -439,6 +503,8 @@ function calltimer(that) {
             $("#win span").addClass("blink_me");
             run_blink();
             $("#win").show();
+            var times_up = new Audio('assets/sounds/timesup.mp3');
+            times_up.play();
             $("#win").click(function(){
                 $(this).hide();
                 $("#win span").removeClass("blink_me");
@@ -447,14 +513,17 @@ function calltimer(that) {
 
             $("#start_clock").addClass("timer_no_start").removeClass("timer");
             $("#start_mask").addClass("mask_no_start").removeClass("mask");
+
+            $("#temp_placeholder").remove();
+            this.no_click = true;
         }
         /*
          As long as the timer is not 0, update our timer div with the current count
          */
         $("#timer span").text(count);
-        var audio = new Audio('assets/sounds/Tick.mp3');
-        audio.play();
-        console.log(count);
+        var tick = new Audio('assets/sounds/tick.mp3');
+        tick.play();
+        //console.log(count);
 
     }, 1000); //1000 will  run it every 1 second
 }
@@ -510,7 +579,7 @@ var choicesArray=['Yes<br>No',
     '(a)No, only your paper needs to have page numbers; <br>(b)Yes, your paper, works cited, and annotated bibliography should have a running page number from the beginning of the document to the end.',
     '(a)On the same page right after the last paragraph of your paper;<br>(b)On page one of your document;<br>(c)On a separate page after your paper.',
     '(a)A TV show;<br>(b)A book;<br>(c)A journal;<br>(d)A website;<br>(e)A database;<br>(f)All of the above.',
-    '(a)Baron, Sandra.<em>Yosemite National Park</em>. New York: Chelsea, 2010, pp. 2-10. <br>(b)Baron, Sandra.<em> Yosemite National Park</em>, Chelsea, 2010, pp. 2-10',
+    '(a)Baron, Sandra.<em>Yosemite National Park</em>. New York: Chelsea, 2010, pp. 2-10. <br>(b)Baron, Sandra. Yosemite National Park, Chelsea, 2010, pp. 2-10',
     '(a)Yes. That’s why the boxes are there. <br>(b)No. Only fill in the boxes necessary for the source you are citing.',
     '(a)Ten spaces or two tabs <br>(b)Five spaces or one tab.',
     '(a)No. URLs are long and messy and should never be included <br>(b)Yes! URLs are required by the new MLA 8 style.',
@@ -539,7 +608,7 @@ var answerArray=['No',
     '(b)Yes, your paper, works cited, and annotated bibliography should have a running page number from the beginning of the document to the end.',
     '(c)On a separate page after your paper.',
     '(f)All of the above.',
-    '(b)Baron, Sandra.Yosemite National Park, Chelsea, 2010, pp. 2-10',
+    '(b)Baron, Sandra. Yosemite National Park, Chelsea, 2010, pp. 2-10',
     '(b)No. Only fill in the boxes necessary for the source you are citing.',
     '(b)Five spaces or one tab.',
     '(b)Yes! URLs are required by the new MLA 8 style.',

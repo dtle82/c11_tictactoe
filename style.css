@@ -37,15 +37,25 @@ body {
     font-weight: bold;
 }
 #stats {
-    height: 100%;
+    font-size:12px;
+    /*height: 90%;*/
     border: solid black 1px;
-    text-shadow: 1px 2px 0 white,
-    1px 2px 0 black;
-    background-color: rgba(255,255,255,.5);
+    text-shadow: 0px 0px 0 white,
+    0px 0px 0 black;
+    background-color: rgba(255,255,255,.75);
+    font-family: Arial, sans-serif;
+    border-radius: 5px;
 }
-h3 {
-    margin: 0;
+
+#stats h3:first-child {
+    text-align: center;
+    font-family: 'Coda Caption', sans-serif;
 }
+
+#stats h3 {
+    text-align: center;
+}
+
 #timer {
     /*border-radius: 90px;*/
     height: 19vh;
@@ -56,8 +66,8 @@ h3 {
     background-repeat: no-repeat;
     font-family: 'Coda Caption', sans-serif;
     color: black;
-    text-shadow: 3px 2px 0 white,
-    4px 3px 0 black;
+    text-shadow: 0px 0px 0 white,
+    0px 0px 0 black;
     font-size: 2vw;
     position: relative;
     /*background-color: red;*/
@@ -71,7 +81,7 @@ h3 {
 
 #player_area {
     text-align: center;
-    width: 65%;
+    /*width: 65%;*/
     height: 100%;
     text-shadow: 1px 2px 0 white,
     1px 2px 0 black;
@@ -99,13 +109,10 @@ h3 {
 #gamebody {
     height: 90%;
     width: 45%;
-    background-image: url("assets/background_images/11.anotherBoard.jpg");
-    background-position: center;
-    background-size: 60vh 60vh;
     text-align: center;
     border: 15px;
     padding: 0;
-
+    background-color: rgba(255,255,255,.5);
     /*background-repeat: no-repeat;*/
     /*background-color: lavender;*/
 
@@ -132,6 +139,10 @@ h3 {
     top: 50%;
     transform: translate(-50%,-50%);
     font-size: 9vh;
+}
+
+.transparent {
+    opacity: .5;
 }
 
 .lg_font {
@@ -165,6 +176,9 @@ h3 {
     transform: translate(-50%, -50%);
 
 }
+.player_indicator {
+    background-color: rgba(255,255,255,.5);
+}
 
 .active_player{
     background-color: greenyellow;
@@ -174,7 +188,8 @@ h3 {
 
 }
 #question {
-    height: 65%;
+    min-height: 40%;
+    height: auto;
     background-color: #545454;
     border: solid black 3px;
     margin: 0;
@@ -194,6 +209,10 @@ h3 {
 .choices:hover {
     background-color: lightblue;
     cursor: pointer;
+}
+
+.answer_selected {
+    border: 1px solid #3f51b5 !important;
 }
 
 .red_advice {
@@ -227,6 +246,10 @@ h3 {
     transform: translate(-50%,-50%);
     text-align: center;
     display:none;
+}
+
+#win:hover {
+    cursor: pointer;
 }
 
 #settings_window {

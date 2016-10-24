@@ -18,16 +18,19 @@
     </div>
     <!--Stats list to display score, games played, proficiency and reset game-->
     <div id="stats_player_area" class="col-lg-12 col-xs-12">
-        <div id="stats" class="col-lg-2 col-xs-2">
+        <div id="stats" class="col-sm-3 col-xs-12 hidden-xs">
+                <h3>Stats</h3>
             <ul>
-                <li><h3>Stats</h3></li>
-                <li>Games Played</li>
-                <li>Players Score</li>
-                <li>Category Proficiency</li>
+                <li>Games Played: <span id="gpSpan" class="label label-default">0</span>
+                    </li>
+                <li>X Score: <span id="pxScore" class="label label-default">0</span>
+                    </li>
+                <li>O Score: <span id="poScore" class="label label-default">0</span>
+                </li>
             </ul>
         </div>
         <!--main tictactoe game area for player 1 and 2-->
-        <div id="player_area" class="col-lg-8 col-xs-8">
+        <div id="player_area" class="col-sm-6 col-xs-7">
             <div id="players" class="col-xs-12">
                 <div class="player_indicator col-xs-6" id="player1"><span>Player X</span></div>
                 <div class="player_indicator col-xs-6" id="player2"><span>Player O</span></div>
@@ -35,29 +38,24 @@
             <button id="settings" class="btn btn-info">Settings</button>
             <button id="reset_button" class="btn btn-warning">Reset</button>
         </div>
-        <div id="timer" class="col-xs-2">
+        <div id="timer" class="col-sm-3 col-xs-5">
             <span>Timer</span>
         </div>
     </div>
 </div>
-
 <div id="game_area" class="col-lg-12 col-xs-12">
     <div id="gamebody" class="col-lg-6 col-xs-6">
-
     </div>
     <!--area for questions to be generated-->
     <div id="question_area" class="col-lg-6 col-xs-6">
         <div id="question">
             <h1>Question</h1>
             <!--area for answer to be generated-->
-
         </div>
         <div id="answer">
-
         </div>
     </div>
 </div>
-
 <div id="win" class="col-xs-12">You Win!</div>
 <div id="settings_window" class="col-xs-12">
     <div id="settings_container" class="col-xs-12">
@@ -77,7 +75,6 @@
                     <option>12</option>
                 </select>
             </div>
-
             <div class="board_number_size col-xs-6 form-group">
                 <label for="win_size">Change Minimum Win Size:</label>
                 <select name="win_size" id="win_size" class="form-control">
@@ -99,7 +96,6 @@
             </div>
         </div>
     </div>
-
 </div>
 </body>
 </html>
