@@ -6,7 +6,7 @@ var games_played = 0;
 var player_x_wins = 0;
 var player_o_wins = 0;
 
-var cell_template = function(parent){
+var cell_template = function(parent,counter){
     var self = this;
     this.parent = parent;
     this.element = null;
@@ -15,7 +15,7 @@ var cell_template = function(parent){
         this.element = $("<div>",
             {
                 class:'ttt_cell',
-                html: ""
+                html: ''
             }
         ).click(this.cell_click);
         return this.element;
@@ -233,7 +233,7 @@ var game_template = function(main_element,board_size,win_size){
      Hard coded win condition is overwritten with a function that dynamically generates
      the win conditions based on the user selected board size.
      */
-    this.win_conditions = calculateWinConditionArray(board_size);
+    this.win_conditions = calculateWinConditionArray(board_size,win_size);
 
     this.create_cells = function(cell_count){
         //console.log('game template create cells called');
@@ -281,9 +281,11 @@ var game_template = function(main_element,board_size,win_size){
         //console.log("how many cells " + this.cell_array.length);
         this.total_cell = this.cell_array.length;
         //console.log("how many selected cells ", $(".selected").length);
+        //console.log("how many selected cells ", $(".inside_ttt").length);
 
         this.total_selected = $(".inside_ttt").length;
-        if (this.total_cell === this.total_selected) {
+        //debugger;
+        if (this.total_cell === this.total_selected) { // checks if total markers = available spaces and no win
             //console.log("TIE!");
             this.callTie();
         }
@@ -292,13 +294,12 @@ var game_template = function(main_element,board_size,win_size){
     this.check_win_conditions = function(){
         //console.log('check win conditions called');
         var current_player_symbol = this.players[this.current_player].get_symbol();
-
+        this.applause = false;
         for(var i=0; i<this.win_conditions.length;i++){
 
             var count=0;
             //console.log('checking win conditions ',this.win_conditions);
             //console.log('cell array is',this.cell_array);
-            this.applause = false;
             for(var j=0; j<this.win_conditions[i].length; j++){
                 if(this.cell_array[this.win_conditions[i][j]].get_symbol() == current_player_symbol){
                     count++;
@@ -316,6 +317,7 @@ var game_template = function(main_element,board_size,win_size){
                         {
                             var applause = new Audio('assets/sounds/applause.mp3');
                             applause.play();
+                            //debugger;
                             this.applause = true;
                             //console.log(this.applause);
                         }
@@ -405,13 +407,13 @@ function apply_click_handlers() {
         var board_size = $("#board_size option:selected").val();
         var win_size = $("#win_size option:selected").val();
 
-        console.log("board_size is ",board_size);
-        console.log("win_size is " , win_size);
+        //console.log("board_size is ",board_size);
+        //console.log("win_size is " , win_size);
 
         var cell_width = 100/board_size;
         cell_width = cell_width.toFixed(3);
         cell_width = cell_width + "%";
-        console.log("Cell width is " + cell_width);
+        //console.log("Cell width is " + cell_width);
         $("#gamebody").html("");
         main_game = new game_template($('#gamebody'),board_size,win_size);
         main_game.create_cells(board_size*board_size);
@@ -450,7 +452,7 @@ function apply_click_handlers() {
 
     $("#board_size").on("change",function() {
        var board_size = $("#board_size option:selected").val();
-        console.log(board_size);
+        //console.log(board_size);
         var options = [];
         for(var i=3;i<=board_size;i++) {
             options_inside = $("<option>",{
@@ -458,7 +460,7 @@ function apply_click_handlers() {
             });
             options.push(options_inside);
         }
-        console.log(options);
+        //console.log(options);
         $("#win_size").text('');
         $("#win_size").append(options);
     });
@@ -466,20 +468,43 @@ function apply_click_handlers() {
 }
 
 function clear_all() {
+    var board_size = $("#board_size option:selected").val();
+    var win_size = $("#win_size option:selected").val();
+
+    //console.log("board_size is " + board_size);
+    //console.log("win_size is " + win_size);
+
+    var cell_width = 100/board_size;
+    cell_width = cell_width.toFixed(3);
+    cell_width = cell_width + "%";
+
+    var total_ttl = $(".inside_ttt").length;
+    //console.log("inside ttt is " + total_ttl);
+    if(total_ttl > 0) { // if no markers has been placed, do not increment game counter, run before game board is cleared
+        $("#gpSpan").text(++games_played);
+    } else {
+        $("#gpSpan").text(games_played);
+    }
+
     $("#player2").removeClass('active_player');
     $("#gamebody").html("");
     $('#question_area').html('<div id="question"><h1>Question</h1></div><div id="answer"></div>');
     clearInterval(main_game.timeCounter);
     $('#timer').html("<span>Timer</span>");
-    main_game = new game_template($('#gamebody'),3,3);
-    main_game.create_cells(9);
+
+    main_game = new game_template($('#gamebody'),board_size,win_size);
+    main_game.create_cells(board_size*board_size);
     main_game.create_players();
+
+    $(".ttt_cell").css("width",cell_width);
+    $(".ttt_cell").css("height",cell_width);
+
     $("#win").hide();
     $("#reset_button").removeClass('blink_me');
     $("#pxScore").text(player_x_wins);
     $("#poScore").text(player_o_wins);
-    $("#gpSpan").text(++games_played);
-    console.log(player_o_wins,player_x_wins,games_played);
+
+    //console.log(player_o_wins,player_x_wins,games_played);
     //games_played = 0;
     //player_o_wins = 0;
     //player_x_wins = 0;
@@ -643,9 +668,9 @@ var categoryArray=['4, 5, 4, 3, 2, 6, 3, 1, 8, 1, 5, 2, 8, 0, 0, 4, 6, 3, 0, 1, 
  3) Diagonal from left to right
  4) Diagonal from right to left
  */
-function calculateWinConditionArray(row) {
+function calculateWinConditionArray(row,min) {
     //console.log("row is " + row);
-    var win = [];
+    //var win = [];
     var wintotal = [];
     row = parseInt(row);
     /* horizontal win array generator */
@@ -656,14 +681,14 @@ function calculateWinConditionArray(row) {
         {
             temp.push(j);
         }
-        win.push(temp);
+        //win.push(temp);
         wintotal.push(temp);
         i=j;
 
     }
 
     /* vertical win array generator */
-    var win = [];
+    //var win = [];
     for(var i=0;  i< row; i++)
     {
         temp = [];
@@ -671,28 +696,80 @@ function calculateWinConditionArray(row) {
         {
             temp.push(j);
         }
-        win.push(temp);
+        //win.push(temp);
         wintotal.push(temp);
     }
     //console.log("vertical", win);
 
-    var win = [];
-    var temp = [];
-    for(var i=0;i<row*row;i+=row+1)
-    {
-        temp.push(i);
+    //var win = [];
+    //debugger;
+    var temp2 = [];
+    for(var i=0;  i<=row-min; i++) {
+        temp = [];
+        temp2 = [];
+        for(j=i;j<row*row-(row*i);j+=row+1)
+        {
+            temp.push(j);
+            switch(i) {
+                case 1:
+                    var k = j+((row-1)*i);
+                    console.log(i+",k "+k);
+                    temp2.push(k);
+                    break;
+                case 2:
+                    var k = j+((row-1)*i);
+                    console.log(i+",k "+k)
+                    temp2.push(k);
+                    break;
+                case 3:
+                    var k = j+((row-1)*i);
+                    console.log(i+",k "+k)
+                    temp2.push(k);
+                    break;
+                default:
+                    temp2 = [];
+                    break;
+            }
+        }
+        wintotal.push(temp);
+        if (temp2.length > 0) { // this avoids the condition where temp2 is empty in the first pass (starting at 0)
+            wintotal.push(temp2);
+        }
 
+        //console.log(i + ", top short diagonal LR", temp);
+        //console.log(i + ", bottom short diagonal LR", temp2);
     }
-    wintotal.push(temp);
-    //console.log("diagonal LR", temp);
 
-    var temp = [];
-    for(i=row-1;i<row*row-1;i+=row-1)
-    {
-        temp.push(i);
+    for(var i=0;  i<=row-min; i++) {
+        temp = [];
+        temp2 = [];
+        for (var j = row - 1 - i; j < row * row - 1 - (row *i); j += row - 1) {
+            temp.push(j);
+            switch(i){
+                case 1:
+                    var k = j+((row+1)*i);
+                    console.log(i+",k "+k);
+                    temp2.push(k);
+                    break;
+                case 2:
+                    var k = j+((row+1)*i);
+                    console.log(i+",k "+k)
+                    temp2.push(k);
+                    break;
+                case 3:
+                    var k = j+((row+1)*i);
+                    console.log(i+",k "+k)
+                    temp2.push(k);
+                    break;
+            }
+        }
+        wintotal.push(temp);
+        if(temp2.length > 0){
+            wintotal.push(temp2);
+        }
+        //console.log("top short diagonal RL", temp);
+        //console.log("bottom short diagonal RL", temp2);
     }
-    wintotal.push(temp);
-    //console.log("diagonal RL", temp);
     //console.log("total", wintotal);
     return wintotal;
 }
